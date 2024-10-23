@@ -111,14 +111,21 @@ const removeById = (personId, done) => {
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
+  Person.remove({name: nameToRemove},(err,data)=>{
+    if(err)return done(err)
+      done(null, data); 
+  })
 
-  done(null /*, data*/);
+
 };
-
+//To find documents based on a value and then to chain the queries sort to sort out based on name, limit to limit the search upto two documents and exec to execute all the queries together
 const queryChain = (done) => {
   const foodToSearch = "burrito";
+  Person.find({favoriteFoods: foodToSearch}).sort({name: 1}).limit(2).select('-age').exec((err,data)=>{
+    done(null , data);
+  })
+  
 
-  done(null /*, data*/);
 };
 
 /** **Well Done !!**
