@@ -50,27 +50,63 @@ const findPeopleByName = (personName, done) => {
 };
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  console.log(food)
+  //to find a single element in the array of objects
+  Person.findOne({favoriteFoods:[food]},(err,data)=>{
+    if(err) return done(err)
+    done(null, data);
+  })
+
 };
 
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  console.log(personId)
+  //to find an element by their id exactly
+  Person.findById({_id: personId},(err,data)=>{
+    if(err) return done(err)
+    done(null, data);
+  })
+
 };
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
+  Person.findById({_id: personId},(err,person)=>{
+      if (err) return done(err)
+      person.favoriteFoods.push(foodToAdd)
+      person.save((err,updatedPerson)=>{      
+      console.log(updatedPerson)
+      done(null ,updatedPerson );
 
-  done(null /*, data*/);
+      })
+
+  })
+
 };
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
+  Person.findOne({name: personName},(err,person)=>{
+    if(err) return done(err)
+//    console.log(person)
+    person.age = ageToSet
+    person.save((err,updatedPerson)=>{
+      if(err)return done(err)
+      console.log("Updated person",updatedPerson)
+    })
+      done(null,person);
+  })
 
-  done(null /*, data*/);
+
 };
-
+//to remove an id 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findById({_id:personId},(err,person)=>{
+    console.log(person)
+    person.remove()
+    done(null, person);
+  })
+
 };
 
 const removeManyPeople = (done) => {
